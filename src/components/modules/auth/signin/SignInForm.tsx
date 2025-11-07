@@ -17,14 +17,23 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { signUpSchema } from "../signup/singupValidation";
 import Link from "next/link";
 import { signInSchema } from "./signInValidation";
-import { signIn } from "@/services/authService";
+import { signIn, ValidateReCaptcha } from "@/services/authService";
 import { toast } from "sonner";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 
 const SignInForm = () => {
+  const { user, setIsLoading, isLoading } = useUser();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirectPath");
+  console.log("redirectPath", redirect);
   const form = useForm({
     resolver: zodResolver(signInSchema),
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [reCaptcha, setReCaptcha] = useState(false);
+  const router = useRouter();
 
   const email = form.watch("email");
   const password = form.watch("password");
@@ -33,17 +42,32 @@ const SignInForm = () => {
   } = form;
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     try {
       const res = await signIn(data);
-      console.log(res )
+      console.log(res);
       if (res?.success === true) {
         toast.success(res?.message);
+        setIsLoading(!isLoading);
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/profile");
+        }
       } else {
-        toast.success(res?.message);
+        toast.error(res?.message);
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleReCaptcha = async (token: string | null) => {
+    if (token) {
+      const result = await ValidateReCaptcha(token);
+      if (result.success === true) {
+        toast.success("Re-Captcha validation successful");
+        setReCaptcha(true);
+      }
     }
   };
 
@@ -111,7 +135,6 @@ const SignInForm = () => {
                     </FormItem>
                   )}
                 />
-
                 {/* Password Field */}
                 <FormField
                   control={form.control}
@@ -151,11 +174,15 @@ const SignInForm = () => {
                     </FormItem>
                   )}
                 />
-
-                {/* Submit Button */}
+                <ReCAPTCHA
+                  theme="dark"
+                  sitekey={`${process.env.NEXT_PUBLIC_CLIENT_KEY}`}
+                  onChange={handleReCaptcha}
+                />
+                ,{/* Submit Button */}
                 <Button
                   type="submit"
-                  disabled={email && password ? false : true}
+                  disabled={email && password && reCaptcha ? false : true}
                   className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-2xl hover:shadow-yellow-500/25 border border-yellow-400/20 hover:border-yellow-300/30 text-lg tracking-wide"
                 >
                   {isSubmitting ? "Signing In ..." : "Sign In"}

@@ -1,15 +1,48 @@
-import { Search, Heart, ShoppingCart, User } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+"use client";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Search, Heart, ShoppingCart, User, Edit } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
+import Link from "next/link";
+import { useUser } from "@/context/UserContext";
+import { logout } from "@/services/authService";
+import { toast } from "sonner";
+import { usePathname, useRouter } from "next/navigation";
+import { protectedRoutes } from "@/constants";
 
 export function Navbar() {
+  const { user, setIsLoading, isLoading, logOutFomUserContext } = useUser();
+
+  const pathname = usePathname();
+
+  const handleLogout = () => {
+    logOutFomUserContext(pathname);
+  };
+
+  console.log(user);
+
   return (
     <nav className=" sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className=" container flex mx-auto h-16 items-center justify-between">
@@ -66,10 +99,93 @@ export function Navbar() {
             </span>
           </Button>
 
-          <Button variant="ghost" className="flex items-center space-x-2">
-            <User className="h-5 w-5" />
-            <span>Login</span>
-          </Button>
+          {user ? (
+            <>
+              <Link href={"/createShop"}>
+                <Button
+                  variant="outline"
+                  className="flex items-center space-x-2"
+                >
+                  <Edit className="h-5 w-5" />
+                  <span>Create Store</span>
+                </Button>
+              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar>
+                    <AvatarImage
+                      src="https://github.com/shadcn.png"
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="start">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      Profile
+                      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Billing
+                      <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Settings
+                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Keyboard shortcuts
+                      <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        Invite users
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuPortal>
+                        <DropdownMenuSubContent>
+                          <DropdownMenuItem>Email</DropdownMenuItem>
+                          <DropdownMenuItem>Message</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>More...</DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                      </DropdownMenuPortal>
+                    </DropdownMenuSub>
+                    <DropdownMenuItem>
+                      New Team
+                      <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>GitHub</DropdownMenuItem>
+                  <DropdownMenuItem>Support</DropdownMenuItem>
+                  <DropdownMenuItem disabled>API</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Button
+                      onClick={handleLogout}
+                      className="w-full  bg-red-100 text-red-600  hover:bg-red-200 hover:text-red-600 hover:outline-none"
+                      variant={"outline"}
+                    >
+                      Log out
+                    </Button>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          ) : (
+            <Link href={"/signin"}>
+              <Button variant="outline" className="flex items-center space-x-2">
+                <User className="h-5 w-5" />
+                <span>Login</span>
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -88,11 +204,7 @@ export function Navbar() {
             </SelectContent>
           </Select>
           <div className="flex-1">
-            <Input
-              type="text"
-              placeholder="Search..."
-              className="w-full"
-            />
+            <Input type="text" placeholder="Search..." className="w-full" />
           </div>
           <Button size="icon" className="bg-[#f0b100] hover:bg-[#d89e00]">
             <Search className="h-4 w-4" />

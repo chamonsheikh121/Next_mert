@@ -1,7 +1,10 @@
-"use client"
+"use client";
 
-import { getCurrentUser } from "@/services/authService";
+import { protectedRoutes } from "@/constants";
+import { getCurrentUser, logout } from "@/services/authService";
 import { IUser } from "@/types";
+import { useRouter } from "next/navigation";
+import { userInfo } from "os";
 import {
   createContext,
   Dispatch,
@@ -10,28 +13,40 @@ import {
   useEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 
 type IUserProviderValues = {
   user: IUser | null;
   isLoading: boolean;
   setUser: (user: IUser | null) => void;
-  setLoading: Dispatch<SetStateAction<boolean>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  logOutFomUserContext:(pathname: string)=>void
 };
 
-export const UserContext = createContext<IUserProviderValues | undefined>(undefined);
+export const UserContext = createContext<IUserProviderValues | undefined>(
+  undefined
+);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+    const router = useRouter();
 
   const handleUser = async () => {
     const user = await getCurrentUser();
     setUser(user);
-    setLoading(false);
+    setIsLoading(false);
+  };
+  const logOutFomUserContext = async (pathname:string) => {
+   await logout()
+        setIsLoading(!isLoading);
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
+
+    toast.success("Logged out successfully");
   };
   useEffect(() => {
-    if (!isLoading) return;
-
     const fetchUser = async () => {
       try {
         await handleUser(); // handleUser should fetch data and update state internally
@@ -47,7 +62,8 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     user,
     setUser,
     isLoading,
-    setLoading,
+    setIsLoading,
+    logOutFomUserContext
   };
 
   return (
@@ -57,5 +73,12 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUser must be use within UserProvider");
+  }
+  return context;
+};
 
 export default UserProvider;

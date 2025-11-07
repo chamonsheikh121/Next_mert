@@ -18,13 +18,20 @@ import { signUpSchema } from "./singupValidation";
 import { signUp } from "@/services/authService";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 
 const SignUpForm = () => {
+  const { user, setIsLoading, isLoading } = useUser();
+
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirectPath");
   const form = useForm({
     resolver: zodResolver(signUpSchema),
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
   const password = form.watch("password");
   const confirmPassword = form.watch("confirmPassword");
@@ -38,6 +45,12 @@ const SignUpForm = () => {
       const res = await signUp(data);
       if (res?.success === true) {
         toast.success(res?.message);
+        setIsLoading(!isLoading);
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/profile");
+        }
       } else {
         toast.success(res?.message);
       }

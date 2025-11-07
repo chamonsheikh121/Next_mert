@@ -1,12 +1,7 @@
 "use client"
 
-import { UserContext } from "@/context/UserContext";
-import { useContext } from "react";
-
 const HomePage =  () => {
 
-const context = useContext(UserContext);
-console.log(context)
 
   return (
     <div>
