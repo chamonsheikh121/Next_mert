@@ -1,7 +1,6 @@
 "use server";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 
 export const signUp = async (data: FieldValues) => {

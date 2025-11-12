@@ -52,61 +52,30 @@ const data = {
     {
       title: "Dashboard",
        icon: Home,
-      url: "#",
+      url: "/user/dashboard",
+      
     },
+    
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-    },
-
-    {
-      title: "bew",
-      url: "#",
-      icon: SquareTerminal,
-    },
-    {
-      title: "Models",
+      title: "shop",
       url: "#",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Manage products",
+          url: "/user/shop/products",
         },
         {
-          title: "Explorer",
-          url: "#",
+          title: "Manage categories",
+          url: "/user/shop/category",
         },
         {
-          title: "Quantum",
-          url: "#",
+          title: "Manage Brands",
+          url: "/user/shop/brand",
         },
       ],
     },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
+  
     {
       title: "Settings",
       url: "#",
