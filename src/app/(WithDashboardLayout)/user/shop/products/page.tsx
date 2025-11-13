@@ -1,15 +1,14 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import ManageProducts from "@/components/dashbaord/shop/product";
+import { getAllProducts } from "@/services/product";
 
-const ManageProducts = () => {
-    return (
-        <div>
-           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">Manage Products</h1>
-            <Link href={"/user/shop/products/create-product"}> <Button>add products</Button></Link>
-           </div>
-        </div>
-    );
+const ManageProductsPage = async() => {
+  const { data } = await getAllProducts();
+  console.log(data);
+  return (
+    <div>
+      <ManageProducts products={data}/>
+    </div>
+  );
 };
 
-export default ManageProducts;
+export default ManageProductsPage;
