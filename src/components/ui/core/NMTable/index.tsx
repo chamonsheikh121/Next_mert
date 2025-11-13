@@ -38,7 +38,7 @@ import {
 
 
 type TNMTableProps<TData>={
-    data: TData[],
+  data: TData[],
 columns: ColumnDef<TData, unknown>[]
 }
 
@@ -111,12 +111,12 @@ export function NMTable<TData>({data,columns}:TNMTableProps<TData>) {
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-gray-300 py-1 border border-gray-300">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} >
                       {header.isPlaceholder
                         ? null
                         : flexRender(

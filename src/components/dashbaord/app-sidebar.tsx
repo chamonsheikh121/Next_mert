@@ -71,7 +71,7 @@ const data = {
         },
         {
           title: "Manage Brands",
-          url: "/user/shop/brand",
+          url: "/user/shop/brands",
         },
       ],
     },

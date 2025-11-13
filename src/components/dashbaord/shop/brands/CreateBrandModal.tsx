@@ -28,8 +28,9 @@ import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import { createCategory } from "@/services/category";
 import { Kanban, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { createBrand } from "@/services/brand";
 
-export function CreateCategoryModal() {
+export function CreateBrandModal() {
   const [imageFiles, setImages] = useState<File[] | []>([]);
   const [preview, setPreview] = useState<string[] | []>([]);
   const [open, setOpen] = useState(false)
@@ -43,13 +44,13 @@ export function CreateCategoryModal() {
 const router = useRouter()
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
+
     try {
       const formData = new FormData();
       formData.append("data", JSON.stringify(data));
-      formData.append("icon", imageFiles[0] as File);
+      formData.append("logo", imageFiles[0] as File);
 
-      const res = await createCategory(formData);
+      const res = await createBrand(formData);
       console.log(res);
       if (res?.success === true) {
         toast.success(res?.message);
@@ -74,13 +75,13 @@ const router = useRouter()
     <Dialog open={open} onOpenChange={setOpen}>
       <form>
         <DialogTrigger asChild>
-          <Button className="cursor-pointer ">Create Category</Button>
+          <Button className="cursor-pointer ">Create Brand</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] lg:max-w-[600px]">
           <DialogHeader>
-            <DialogTitle>Create Category</DialogTitle>
+            <DialogTitle>Create a new Brand</DialogTitle>
             <DialogDescription>
-              Create a category for specific products
+              Create a brand for specific products
             </DialogDescription>
           </DialogHeader>
 
@@ -98,7 +99,7 @@ const router = useRouter()
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="">Category Name</FormLabel>
+                        <FormLabel className="">Brand Name</FormLabel>
                         <FormControl>
                           <div className="relative group">
                             <div className=""></div>
@@ -108,7 +109,7 @@ const router = useRouter()
                                 {...field}
                                 value={field.value || ""}
                                 type="text"
-                                placeholder="category"
+                                placeholder="Brand name"
                                 className="pl-12 placeholder:text-slate-400 focus:border-yellow-400 focus:ring-yellow-400/20 transition-all duration-200 h-12 rounded-lg border-0"
                               />
                             </div>
@@ -120,33 +121,7 @@ const router = useRouter()
                   />
 
                   <div className="flex items-center gap-3">
-                    <div className="flex-1">
-                      <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-sm font-medium text-gray-700 flex-1 gap-2">
-                              <Settings className="h-4 w-4 text-blue-600" />
-                              description
-                            </FormLabel>
-                            <FormControl>
-                              <div className="relative group">
-                                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg blur opacity-0 group-focus-within:opacity-20 transition-opacity duration-300"></div>
-                                <Textarea
-                                  {...field}
-                                  value={field.value || ""}
-                                  placeholder="description"
-                                  className="relative bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200 min-h-20 rounded-lg border resize-none"
-                                />
-                              </div>
-                            </FormControl>
 
-                            <FormMessage className="text-red-500 text-xs" />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
 
                     <div className="w-[150px]">
                       {imageFiles?.length === 1 ? (
