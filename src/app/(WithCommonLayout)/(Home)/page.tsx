@@ -18,8 +18,8 @@ const HomePage = async () => {
       <Header />
       <Categories categories={categories} />
       <FeaturedProducts products={products} />
-      <TopBrands />
       <FlashSale products={flashProducts} />
+      <TopBrands />
     </div>
   );
 };

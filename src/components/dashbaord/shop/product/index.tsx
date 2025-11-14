@@ -5,17 +5,19 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { NMTable } from "@/components/ui/core/NMTable";
 import { DeleteRowModal } from "@/components/ui/core/NMTable/DeleteRowModal";
 import { Spinner } from "@/components/ui/spinner";
-import { TProduct } from "@/types";
+import { TProduct, TProductMeta } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Eye, SquarePenIcon, TableColumnsSplit } from "lucide-react";
+import { Eye, SquarePenIcon } from "lucide-react";
 
 import Link from "next/link";
 import { useState } from "react";
 import { CreateFlashModal } from "./CreateFlashModal";
+import Pagination from "@/components/ui/core/pagination";
 
-const ManageProducts = ({ products }: { products: TProduct[] }) => {
+const ManageProducts = ({ products, meta }: { products: TProduct[], meta:TProductMeta }) => {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 
+  console.log(meta);
   console.log(selectedProducts);
   const handleDeleteCategory = async (id: string) => {
     //    try {
@@ -142,9 +144,9 @@ const ManageProducts = ({ products }: { products: TProduct[] }) => {
       header: "Actions",
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-2">
-          <Button className="cursor-pointer" variant={"outline"}>
+          <Link href={`/products/${row.original._id}`}><Button className="cursor-pointer" variant={"outline"}>
             <Eye className="text-gray-500" />
-          </Button>
+          </Button></Link>
           <Link href={`/user/shop/products/update-product/${row.original._id}`}>
             <Button className="cursor-pointer">
               <SquarePenIcon className="text-gray-500" />
@@ -175,6 +177,7 @@ const ManageProducts = ({ products }: { products: TProduct[] }) => {
       </div>
 
       <NMTable data={products} columns={columns} />
+      <Pagination totalPage = {meta?.totalPage}/>
     </div>
   );
 };

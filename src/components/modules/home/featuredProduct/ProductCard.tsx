@@ -5,12 +5,12 @@ import { TProduct } from "@/types/product";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const FeaturedProductCard = ({ product }: { product: TProduct }) => {
+const ProductCard = ({ product }: { product: TProduct }) => {
   const mainImage = product.imageUrls[0] || "/images/product-placeholder.jpg";
   const isOutOfStock = product.stock === 0;
 
   return (
-    <div className="group relative bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100">
+    <div className="group relative h-fit bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100">
       {/* Image Container */}
       <div className="relative h-50 overflow-hidden">
         <Link href={`/products/${product?._id}`}>
@@ -53,7 +53,8 @@ const FeaturedProductCard = ({ product }: { product: TProduct }) => {
               />
             </svg>
           </button>
-          <button className="w-10 cursor-pointer h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-lg">
+         <Link href={`/products/${product?._id}`}>
+          <Button className="w-10 cursor-pointer h-10  backdrop-blur-sm rounded-full flex items-center justify-center transition-colors shadow-lg">
             <svg
               className="w-5 h-5 text-gray-700"
               fill="none"
@@ -73,7 +74,7 @@ const FeaturedProductCard = ({ product }: { product: TProduct }) => {
                 d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
               />
             </svg>
-          </button>
+          </Button></Link>
         </div>
 
         {/* Add to Cart Button */}
@@ -180,4 +181,4 @@ const FeaturedProductCard = ({ product }: { product: TProduct }) => {
   );
 };
 
-export default FeaturedProductCard;
+export default ProductCard;

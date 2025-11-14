@@ -1,6 +1,8 @@
 // components/FeaturedProducts.tsx
 import { TProduct } from '@/types/product';
-import FeaturedProductCard from './FeaturedProductCard';
+import FeaturedProductCard from './ProductCard';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 
 interface FeaturedProductsProps {
@@ -50,7 +52,7 @@ const FeaturedProducts = ({
 
         {/* View All CTA */}
         <div className="text-center mt-16">
-          <button className="group px-8 py-4 bg-gray-900 text-white rounded-full font-semibold text-lg hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center">
+           <Link href={"/products"}> <Button className="group px-8 py-4  rounded-full font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center">
             View All Products
             <svg 
               className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" 
@@ -60,7 +62,7 @@ const FeaturedProducts = ({
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </button>
+          </Button></Link>
         </div>
       </div>
     </section>

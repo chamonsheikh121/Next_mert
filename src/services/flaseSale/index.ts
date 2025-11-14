@@ -4,8 +4,8 @@ import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const createFlashSale = async (data: {
+    products: string[];
   discountPercentage: number;
-  product: string[];
 }) => {
   console.log("===============", data);
   try {
