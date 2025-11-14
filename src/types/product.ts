@@ -6,8 +6,9 @@ export type TProduct = {
   price: number;
   stock: number;
   weight: number;
-  category: string;
-  brand: string;
+  offerPrice:number;
+  category: Record<string, string>;
+  brand: Record<string, string>;
   availableColors: string[];
   specification: Record<string, string>;
   keyFeatures: string[];

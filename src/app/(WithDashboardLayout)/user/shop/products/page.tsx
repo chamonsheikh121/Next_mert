@@ -3,7 +3,7 @@ import { getAllProducts } from "@/services/product";
 
 const ManageProductsPage = async() => {
   const { data } = await getAllProducts();
-  console.log(data);
+  // console.log(data);
   return (
     <div>
       <ManageProducts products={data}/>

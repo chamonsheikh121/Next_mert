@@ -8,7 +8,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -41,7 +40,10 @@ export function Navbar() {
     logOutFomUserContext(pathname);
   };
 
-  console.log(user);
+  const navbarItems = [
+    { label: "Dashboard", href: "/user/dashboard" },
+    { label: "Profile", href: "/profile" },
+  ];
 
   return (
     <nav className=" sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -123,24 +125,13 @@ export function Navbar() {
                 <DropdownMenuContent className="w-56" align="start">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      Profile
-                      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      Billing
-                      <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      Settings
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      Keyboard shortcuts
-                      <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    {navbarItems?.map((item, idx) => (
+                      <Link key={idx} href={item.href}>
+                        <DropdownMenuItem>{item.label}</DropdownMenuItem>
+                      </Link>
+                    ))}
                   </DropdownMenuGroup>
-                  <DropdownMenuSeparator />
+                  {/* <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     <DropdownMenuItem>Team</DropdownMenuItem>
                     <DropdownMenuSub>
@@ -158,13 +149,13 @@ export function Navbar() {
                     </DropdownMenuSub>
                     <DropdownMenuItem>
                       New Team
-                      <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+                      
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>GitHub</DropdownMenuItem>
                   <DropdownMenuItem>Support</DropdownMenuItem>
-                  <DropdownMenuItem disabled>API</DropdownMenuItem>
+                  <DropdownMenuItem disabled>API</DropdownMenuItem> */}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Button

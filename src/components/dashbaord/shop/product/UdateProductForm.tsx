@@ -71,8 +71,8 @@ export function UpdateProductForm({ product }: { product: TProduct }) {
       price: product?.price || "",
       stock: product?.stock || "",
       weight: product?.weight || "",
-      category: product?.category || "",
-      brand: product?.brand || "",
+      category: product?.category?.name || "",
+      brand: product?.brand?.name || "",
       specification: Object.entries(product?.specification || {}).map(
         ([key, value]) => ({ key, value })
       ) || [{ key: "", value: "" }],
