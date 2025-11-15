@@ -30,9 +30,12 @@ import { logout } from "@/services/authService";
 import { toast } from "sonner";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedRoutes } from "@/constants";
+import { useAppSelector } from "@/redux/utils";
+import { getAllProductsFromCart } from "@/redux/features/cartToOrder/cartToOrderSlice";
 
 export function Navbar() {
   const { user, setIsLoading, isLoading, logOutFomUserContext } = useUser();
+ const products = useAppSelector(getAllProductsFromCart);
 
   const pathname = usePathname();
 
@@ -49,12 +52,12 @@ export function Navbar() {
     <nav className=" sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className=" container flex mx-auto h-16 items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
+       <Link href="/"> <div className="flex items-center space-x-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#f0b100]">
             <span className="text-lg font-bold text-white">S</span>
           </div>
           <span className="text-xl font-bold">ShopHub</span>
-        </div>
+        </div></Link>
 
         {/* Search Bar with Category Selection */}
         <div className="hidden flex-1 max-w-2xl mx-8 md:flex">
@@ -94,12 +97,12 @@ export function Navbar() {
             </span>
           </Button>
 
-          <Button variant="ghost" size="icon" className="relative">
+          <Link href="/cart"><Button variant="ghost" size="icon" className="relative">
             <ShoppingCart className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#f0b100] text-xs text-white">
-              5
+            <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#f0b100] text-xs text-red">
+            {products?.length ? products.length :0}
             </span>
-          </Button>
+          </Button></Link>
 
           {user ? (
             <>

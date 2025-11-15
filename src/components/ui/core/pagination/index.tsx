@@ -5,11 +5,27 @@ import { useEffect, useState } from "react";
 import { Button } from "../../button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Input } from "../../input";
+import {
+  Controller,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
+import { Field, FieldError, FieldGroup, } from "../../field";
 
 const Pagination = ({ totalPage }: { totalPage: number }) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState(10)
+  const form = useForm();
 
-console.log(totalPage);
+  console.log(totalPage);
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data);
+    const pageNumber = parseInt(data?.jumpTo);
+    setLimit(pageNumber);
+  };
 
   const router = useRouter();
   const handleBefore = () => {
@@ -24,8 +40,8 @@ console.log(totalPage);
   };
 
   useEffect(() => {
-    router.push(`?page=${currentPage}`);
-  }, [currentPage, router]);
+    router.push(`?page=${currentPage}&limit=${limit}`);
+  }, [currentPage, router, limit]);
 
   return (
     <div className="flex items-center justify-end space-x-2">
@@ -62,6 +78,41 @@ console.log(totalPage);
       >
         <ArrowRight />
       </button>
+      <div className="space-y-2 flex flex-col">
+        <form
+          className="flex flex-col items-center   gap-2"
+          id="form-rhf-demo"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FieldGroup>
+            <Controller
+              name="jumpTo"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <Input
+                    {...field}
+                    id="form-rhf-demo-title"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="eg:23"
+                    autoComplete="off"
+                    className="border border-gray-300"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+
+          <Button>Submit</Button>
+        </form>
+      </div>
+      {/* <div className="flex items-center">
+        <Input className="border border-gray-300 w-14"/>
+        <Button>Submit</Button>
+      </div> */}
     </div>
   );
 };

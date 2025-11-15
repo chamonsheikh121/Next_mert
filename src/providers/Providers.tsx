@@ -1,8 +1,11 @@
 import UserProvider from "@/context/UserContext";
+import ReduxStoreProvider from "./ReduxStoreProvider";
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <UserProvider>{children} </UserProvider>
+      <UserProvider>
+        <ReduxStoreProvider>{children}</ReduxStoreProvider>
+      </UserProvider>
     </>
   );
 };

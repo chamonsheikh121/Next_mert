@@ -1,3 +1,4 @@
+import CommonBanner from "@/components/ui/core/commonBanner/CommonBanner";
 import { getProduct } from "@/services/product";
 import Image from "next/image";
 
@@ -13,10 +14,12 @@ const ProductDetails = async ({
 console.log( product);
 
   return (
-    <div className="min-h-screen  py-8">
+    <div className="bg-gray-50">
+<CommonBanner heading="View Product" subHeading="Explore the product details here"/>
+<div className="min-h-screen  py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <div className="mb-8">
+        <div className="mb-8 ">
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
@@ -68,12 +71,12 @@ console.log( product);
         </div>
 
         {/* Main Product Section */}
-        <div className=" rounded-2xl shadow-lg overflow-hidden">
+        <div className=" rounded-2xl overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
             {/* Product Images Section - Left Side */}
             <div>
               {/* Main Image */}
-              <div className="bg-gray-100 rounded-2xl relative aspect-square mb-4 flex items-center justify-center">
+              <div className="bg-gray-100 border shadow-sm rounded-2xl relative aspect-square mb-4 flex items-center justify-center">
                 <div className="text-center border   border-black">
                   {product?.imageUrls[0] ? (
                     <Image
@@ -266,6 +269,8 @@ console.log( product);
           </div>
         </div>
       </div>
+    </div>
+
     </div>
   );
 };

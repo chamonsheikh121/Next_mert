@@ -14,9 +14,10 @@ export const createProduct = async (data: FormData) => {
   return res.json();
 };
 
-export const getAllProducts = async ({ page }: { page: string }) => {
+export const getAllProducts = async () => {
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/product?page=${page}&limit=2`,
+    `${process.env.NEXT_PUBLIC_BASE_API}/product`,
     {
       next: {
         tags: ["PRODUCT"],

@@ -1,13 +1,21 @@
-// components/FeaturedProductCard.tsx
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import { TProduct } from "@/types/product";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "@/redux/features/cartToOrder/cartToOrderSlice";
+import { toast } from "sonner";
 
 const ProductCard = ({ product }: { product: TProduct }) => {
   const mainImage = product.imageUrls[0] || "/images/product-placeholder.jpg";
   const isOutOfStock = product.stock === 0;
+  const dispatch = useDispatch();
+  const handleAddToCart = () => {
+    dispatch(addProductToCart(product));
+    toast.success("Product added to the cart !")
+  };
 
   return (
     <div className="group relative h-fit bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100">
@@ -53,33 +61,37 @@ const ProductCard = ({ product }: { product: TProduct }) => {
               />
             </svg>
           </button>
-         <Link href={`/products/${product?._id}`}>
-          <Button className="w-10 cursor-pointer h-10  backdrop-blur-sm rounded-full flex items-center justify-center transition-colors shadow-lg">
-            <svg
-              className="w-5 h-5 text-gray-700"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-              />
-            </svg>
-          </Button></Link>
+          <Link href={`/products/${product?._id}`}>
+            <Button className="w-10 cursor-pointer h-10  backdrop-blur-sm rounded-full flex items-center justify-center transition-colors shadow-lg">
+              <svg
+                className="w-5 h-5 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            </Button>
+          </Link>
         </div>
 
         {/* Add to Cart Button */}
         {!isOutOfStock && (
-          <Button className="absolute w-20 cursor-pointer bottom-4 left-1/2 transform -translate-x-1/2  rounded-full shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0">
+          <Button
+            onClick={handleAddToCart}
+            className="absolute w-20 cursor-pointer bottom-4 left-1/2 transform -translate-x-1/2  rounded-full shadow-lg transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0"
+          >
             <ShoppingCart size={30} />
           </Button>
         )}
@@ -132,11 +144,12 @@ const ProductCard = ({ product }: { product: TProduct }) => {
         {/* Price & Actions */}
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <div >
+            <div>
               {product.offerPrice ? (
                 <div className="flex  gap-2 items-center">
                   <span className="text-xl font-bold text-gray-600">
-                    ${parseInt(`
+                    $
+                    {parseInt(`
                 ${product.offerPrice}
          `)}
                   </span>
